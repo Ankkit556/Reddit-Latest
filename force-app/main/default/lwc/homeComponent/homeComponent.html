@@ -1,0 +1,130 @@
+<template>
+    <lightning-card title="Reddit" class="title card" icon-name="standard:bot">
+       <lightning-card title="Create a Post" class="slds-var-p-left_medium card">
+            <lightning-button class="slds-var-m-around_large" slot="actions" label="Create" variant="neutral" onclick={createPost}></lightning-button>
+            <c-search-post-component></c-search-post-component>
+        </lightning-card>
+<!--         <lightning-button class="slds-var-m-around_large" slot="actions" label="Create a SubReddit" variant="neutral" onclick={createSubreddit}></lightning-button>
+ -->    </lightning-card>
+
+    <template if:true={showcreatePost}>
+        <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+            <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" onclick={closePostCreateModal}>
+                <svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
+                 <use xlink:href="/slds/icons/utility-sprite/svg/symbols.svg#close"></use>
+                </svg>
+                <span class="slds-assistive-text">Cancel and close</span>
+            </button>
+            <div class="slds-modal__header">
+            <h1 id="modal-heading-01" class="slds-modal__title slds-hyphenate">Create a Post</h1>
+            </div>
+            <div class="slds-modal__content slds-var-p-around_medium" id="modal-content-id-1">
+                <lightning-record-form
+                object-api-name={objectApiName}
+                fields={postFields}
+                onsuccess={postCreated}
+                record-id={recordId}
+                onsubmit={SubmitPost}
+                >
+                </lightning-record-form>
+              <!--   <div class="slds-m-around_medium">
+                    <lightning-input type="file" 
+                    accept=".jpeg , .jpg"
+                    label="Attachment" onchange={openfileUpload}></lightning-input>
+                </div>
+                <template if:true={fileData}>
+                    <p>{fileData.filename}</p>
+                </template>
+                <lightning-button variant="brand" label="Upload Image" title="Upload" onclick={handleClick} class="slds-m-left_x-small"></lightning-button>
+             -->
+            </div>
+            <div class="slds-modal__footer">
+            <button class="slds-button slds-button_neutral" onclick={closePostCreateModal} aria-label="Cancel and close">Cancel</button>
+            <!--<button class="slds-button slds-button_brand" onclick={SubmitPost}>Save</button>
+            --> </div> 
+            </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+    </template>
+
+
+    <template if:true={postList}>
+        <template for:each={postList} for:item="post">
+            <lightning-card title={post.Title__c}  data-id={post.Id} key={post.Id} icon-name='utility:signpost' class="tiitle card slds-var-p-around_medium">
+                <lightning-button class="slds-var-m-around_large" slot="actions" label="Create a SubReddit"  data-postid={post.Id} variant="neutral" onclick={createSubreddit}></lightning-button>
+
+                <label class="slds-var-m-around_large " slot="actions">{post.CreatedDate}</label></br>
+                <div class="slds-box">
+                    <label class="slds-var-m-around_large">{post.Name}</label></br>
+                    <label class="slds-var-m-around_large">{post.Body__c}</label></br>
+                
+                </div>
+                <p></p>
+                <br/>
+                <br/>
+               <!--  <lightning-button icon-name="utility:like" variant="bare" label="1" onclick={toggleIncrement} size="medium"></lightning-button>
+                <lightning-button icon-name="utility:dislike" variant="bare" onclick={toggleDecrement}  size="medium"></lightning-button>
+             -->    <c-view-reaction-component postid={post.Id}></c-view-reaction-component>
+                
+                
+                
+                 <lightning-card title="Comments" class="title card" icon-name="utility:share_post">
+                    <!-- <lightning-input label="Enter your comment" onchange={commentchangehandler}></lightning-input>
+                        
+                    --> <lightning-button variant="brand" label="Write a Comment" slot="actions" onclick={insertComment}></lightning-button>
+                        
+                        
+                        
+                    
+                    <lightning-record-edit-form
+                    object-api-name={commentObjectApiName}
+                    >
+                        <lightning-input-field field-name={} class="slds-var-p-around_medium"></lightning-input-field>
+                    </lightning-record-edit-form>
+                    <template if:true={comments}>
+                        <template for:each={comments} for:item="comment">
+                            <!-- child comment component with post record id as parameter-->
+                        </template>
+                    </template>
+                   
+                </lightning-card>
+            </lightning-card>
+            
+        </template>
+        
+    </template>
+
+    <template if:true={createsubReddit}>
+        <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+            <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" onclick={closeSubModal}>
+                <svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
+                 <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+                </svg>
+                <span class="slds-assistive-text">Cancel and close</span>
+            </button>
+            <div class="slds-modal__header">
+            <h1 id="modal-heading-02" class="slds-modal__title slds-hyphenate">Create a new SubReddit</h1>
+            </div>
+            <div class="slds-modal__content slds-var-p-around_medium" id="modal-content-id-2">
+                <lightning-record-form
+                object-api-name={objectName}
+                fields={SUBfIELDS}
+                onsuccess={createSubreddit}
+                record-id={recordId}
+                onsubmit={SubmitReddit}
+                >
+                </lightning-record-form>
+            <c-createsubreddit postid={postidddd}></c-createsubreddit>
+            </div>
+            <div class="slds-modal__footer">
+                <button class="slds-button slds-button_neutral" onclick={closeSubModal} aria-label="Cancel and close">Close</button>
+                <!--<button class="slds-button slds-button_brand" onclick={SubmitPost}>Save</button>
+                --> </div> 
+            </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+    </template>
+
+</template>

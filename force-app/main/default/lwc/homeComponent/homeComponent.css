@@ -1,0 +1,16 @@
+:host {
+    min-width:430px;
+    max-width:620px;
+}
+.title{
+    font-family: cursive;
+    color: darkslateblue;
+    font-size: larger;
+}
+
+.card{
+    margin-left: 20px;
+    border-color : blanchedalmond;
+    border: 0.5px;
+    border-radius: 5px;
+}

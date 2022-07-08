@@ -1,0 +1,12 @@
+<template>
+    <lightning-card title="Create a New SubReddit " icon-name="standard:account">
+        <div class="slds-p-around_x-small">
+            <lightning-input label="Name" value={rec.Name} onchange={handleNameChange}></lightning-input>
+            <lightning-input label="Title" value={rec.Title} onchange={handleTitleChange}></lightning-input>
+            <lightning-input label ="Post" value={rec.Post} onchange={handlePostCyhange}></lightning-input>
+            <lightning-input type="Description" label="Description" value={rec.Des} onchange={handleDesChange}></lightning-input><br/>
+            <lightning-button label="Save" onclick={handleClick}></lightning-button>
+            
+        </div>
+    </lightning-card>
+</template>
